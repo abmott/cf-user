@@ -1,0 +1,24 @@
+#!/bin/bash
+if [ -z "$1" ];
+then
+#Designate Remote System
+read -p "Enter CF instance: -> " CFinstance
+else
+  CFinstance="$1"
+fi
+  if [[ "$CFinstance" = "sandbox" ]]; then
+      cf login -a https://api.sys.sandbox.gdc.digital.pncie.com --skip-ssl-validation
+      echo "$1"
+
+    else
+      if [[ "$CFinstance" = "pdc" ]]; then
+      cf login -a https://api.sys.prod.pdc.digital.csaa-insurance.aaa.com --skip-ssl-validation
+        echo "$1"
+      else
+        if [[ "$CFinstance" = "gdc" ]]; then
+        cf login -a https://api.sys.prod.gdc.digital.csaa-insurance.aaa.com --skip-ssl-validation
+          echo "$1"
+    fi
+  fi
+fi
+echo -n -e "\033]0;CF Connected to $CFinstance\007"
