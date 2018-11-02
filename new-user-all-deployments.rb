@@ -173,7 +173,8 @@ target.each do |targets|
   else
     env_user.merge!("#{target}": "#{user_exists}")
     puts green("Account has been created for #{options[:username]} in #{target}")
-    newuser = File.new("#{wrkdir}/cf_created_users/createduser.txt", "a")
+    puts wrkdir
+    newuser = File.new("#{wrkdir}/cf_created_users/createduser.txt", "a+")
     newuser.puts "#{options[:username]} has been created and the password has been set to: #{password} for #{target}"
     newuser.close
   end
