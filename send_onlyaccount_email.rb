@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-def send_email(emailaddr, password, env, pcf_login_url, pcf_api_url, send_email_from, send_email_domain, send_email_user, send_email_api_key, smtp_endpoint)
+def send_onlyaccount_email(emailaddr, env, pcf_login_url, pcf_api_url, send_email_from, send_email_domain, send_email_user, send_email_api_key, smtp_endpoint)
 require 'net/smtp'
 #emailaddr = "Adam.Mott@csaa.com"
 #password = "this&^*(the&*(**pass))"
@@ -72,40 +72,6 @@ break: after-white-space; color: rgb(0, 0, 0); font-size: 14px; font-family:=
 </html>
 MESSAGE_END
 
-pass_email = <<MESSAGE_END
-From: #{send_email_from}
-To: #{name} <#{emailaddr}>
-MIME-Version: 1.0
-Content-type: text/html
-Subject: PCF Account Access
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
-</head>
-<body style=3D"word-wrap: break-word; -webkit-nbsp-mode: space; -webkit-line-=
-break: after-white-space; color: rgb(0, 0, 0); font-size: 14px; font-family:=
- Calibri, sans-serif;">
-<div>
-<div>#{name},</div>
-<div><br>
-</div>
-<div>Your password for #{env} has been set to: #{password}</div>
-<div><br>
-</div>
-<div>If you would like to change your password, access the security page after login.</div>
-<div>Your password must contain 15 characters, 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character.</div>
-<div><br>
-</div>
-<div>Thank you,</div>
-<div><br>
-</div>
-<div>Dev-Ops Team</div>
-</div>
-</body>
-</html>
-MESSAGE_END
-
 def emailnotify(emailaddr, email, send_email_from, send_email_domain, send_email_user, send_email_api_key, smtp_endpoint)
 smtp = Net::SMTP.new "#{smtp_endpoint}", 465
 smtp.enable_ssl
@@ -117,5 +83,4 @@ end
 
 emailnotify("#{emailaddr}", "#{account_email}", "#{send_email_from}", "#{send_email_domain}", "#{send_email_user}", "#{send_email_api_key}", "#{smtp_endpoint}")
 
-emailnotify("#{emailaddr}", "#{pass_email}", "#{send_email_from}", "#{send_email_domain}", "#{send_email_user}", "#{send_email_api_key}", "#{smtp_endpoint}")
 end

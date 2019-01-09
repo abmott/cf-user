@@ -147,7 +147,7 @@ end
 #Log into cf targets
 env_user = Hash.new
 #target = [[prodTarget,options[:prodpass]], [backupTarget,options[:backuppass]], [sandTarget,options[:sandboxpass]]]
-target = [[params['sandbox']['target'],options[:sandboxpass]]]
+target = [[params['prod']['target'],options[:prodpass]], [params['sandbox']['target'],options[:sandboxpass]]]
 target.each do |targets|
   user_exists = false
   target, pass = targets[0], targets[1]

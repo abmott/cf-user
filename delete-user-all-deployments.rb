@@ -13,14 +13,14 @@ end
 
 #Declare cf targets to variable
 
-#pdcTarget = "https://api.sys.prod.pdc.digital.csaa-insurance.aaa.com"
-#gdcTarget = "https://api.sys.prod.gdc.digital.csaa-insurance.aaa.com"
+prodTarget = "https://api.sys.prod.smarsh.cloud"
+#backupTarget = "https://api.sys.prod.backup.digital.csaa-insurance.aaa.com"
 sandTarget = "https://api.sys.pcfdemo.smarsh.cloud"
 
 wrkdir = Dir.pwd
 
-# variable order - username, adminaccnt, pdcpass, gdcpass, sandpass, org}
-options = {:username => nil, :admin => nil, :pdcpass => nil, :gdcpass => nil, :sandboxpass => nil, :org => nil, :masterpass => nil}
+# variable order - username, adminaccnt, prodpass, backuppass, sandpass, org}
+options = {:username => nil, :admin => nil, :prodpass => nil, :backuppass => nil, :sandboxpass => nil, :org => nil, :masterpass => nil}
 
 parser = OptionParser. new do|opts|
   opts.banner = "Usage user.rb [options]"
@@ -32,12 +32,12 @@ parser = OptionParser. new do|opts|
     options[:admin] = admin
   end
 
-  opts.on('-p', '--pdcpass pdcpass', 'PDC password for used admin account') do |pdcpass|
-    options[:pdcpass] = pdcpass
+  opts.on('-p', '--prodpass prodpass', 'prod password for used admin account') do |prodpass|
+    options[:prodpass] = prodpass
   end
 
-  opts.on('-g', '--gdcpass gdcpass', 'GDC password for used admin account') do |gdcpass|
-    options[:gdcpass] = gdcpass
+  opts.on('-g', '--backuppass backuppass', 'backup password for used admin account') do |backuppass|
+    options[:backuppass] = backuppass
   end
 
   opts.on('-s', '--sandboxpass sandboxpass', 'Sandbox password for used admin account') do |sandboxpass|
@@ -48,7 +48,7 @@ parser = OptionParser. new do|opts|
     options[:masterpass] = masterpass
   end
 
-  opts.on('-o', '--org org', 'PCF Organization account is being created') do |org|
+  opts.on('-o', '--org org', 'PCF Organization account is being deleted') do |org|
     options[:org] = org
   end
 
@@ -63,8 +63,8 @@ parser.parse!
 #check for master password
 if options[:masterpass] != nil
   then
-  options[:pdcpass] = options[:masterpass]
-  options[:gdcpass] = options[:masterpass]
+  options[:prodpass] = options[:masterpass]
+  options[:backuppass] = options[:masterpass]
   options[:sandboxpass] = options[:masterpass]
 end
 
@@ -82,21 +82,21 @@ if options[:admin] == nil
     options[:admin] = STDIN.gets.chomp
 end
 
-#Designate PDC Password
-if options[:pdcpass] == nil
+#Designate prod Password
+if options[:prodpass] == nil
   puts ""
-  print green("Enter PDC Password: -> ")
-    options[:pdcpass] = STDIN.gets.chomp
-    nothing = "*" * options[:pdcpass].length
+  print green("Enter Prod Password: -> ")
+    options[:prodpass] = STDIN.gets.chomp
+    nothing = "*" * options[:prodpass].length
     puts nothing
 end
 
-#Designate GDC Password
-if options[:gdcpass] == nil
+#Designate backup Password
+if options[:backuppass] == nil
   puts ""
-  print green("Enter GDC Password: -> ")
-    options[:gdcpass] = STDIN.gets.chomp
-    nothing = "*" * options[:gdcpass].length
+  print green("Enter Backup Password: -> ")
+    options[:backuppass] = STDIN.gets.chomp
+    nothing = "*" * options[:backuppass].length
     puts nothing
 end
 
@@ -117,8 +117,8 @@ if options[:org] == nil
 end
 
 #Log into cf targets
-#target = [[pdcTarget,options[:pdcpass]], [gdcTarget,options[:gdcpass]], [sandTarget,options[:sandboxpass]]]
-target = [[sandTarget,options[:sandboxpass]]]
+#target = [[prodTarget,options[:prodpass]], [backupTarget,options[:backuppass]], [sandTarget,options[:sandboxpass]]]
+target = [[prodTarget,options[:sandboxpass]], [sandTarget,options[:sandboxpass]]]
 target.each do |targets|
   target = targets[0]
   puts target
